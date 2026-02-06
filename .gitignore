@@ -4,6 +4,7 @@ node_modules/
 # Variables de entorno
 .env
 .env.local
+seed.js
 
 # Archivos de desarrollo
 .DS_Store
