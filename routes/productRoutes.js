@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const { uploadFile } = require('../controllers/blobController'); // Importa el nuevo controlador
 const productController = require('../controllers/productController');
+const authMiddleware = require('../middlewares/auth');
 
 // Configura multer para manejar archivos en memoria (no en disco)
 const upload = multer({ storage: multer.memoryStorage() });
@@ -27,10 +28,10 @@ const handleImageUpload = async (req, res, next) => {
 };
 
 // CRUD routes modificadas
-router.post('/', upload.single('image'), handleImageUpload, productController.createProduct);
-router.patch('/:id', upload.single('image'), handleImageUpload, productController.updateProduct);
-router.get('/', productController.getProducts);
-router.get('/:id', productController.getProductById);
-router.delete('/:id', productController.deleteProduct);
+router.post('/', authMiddleware.authenticate, upload.single('image'), handleImageUpload, productController.createProduct);
+router.patch('/:id', authMiddleware.authenticate, upload.single('image'), handleImageUpload, productController.updateProduct);
+router.get('/', authMiddleware.authenticate, productController.getProducts);
+router.get('/:id', authMiddleware.authenticate, productController.getProductById);
+router.delete('/:id', authMiddleware.authenticate, productController.deleteProduct);
 
 module.exports = router;
