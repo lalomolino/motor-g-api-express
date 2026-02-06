@@ -4,7 +4,6 @@ node_modules/
 # Variables de entorno
 .env
 .env.local
-seed.js
 
 # Archivos de desarrollo
 .DS_Store
@@ -19,6 +18,12 @@ test.js
 
 #uploads
 public/
+temp-images/
+*.webp
+*.json
+seed.js
+upload-products.js
+reset-prices.js
 
 # Vercel
 .vercel/
