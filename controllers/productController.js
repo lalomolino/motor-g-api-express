@@ -93,7 +93,7 @@ exports.updateProduct = async (req, res) => {
         const { name, price, amount, visible, location } = req.body;
 
         // Si hay una nueva imagen, viene en req.body.image desde el middleware
-        const updateData = { name, price, amount, visible };
+        const updateData = { name, price, amount, visible, location };
         if (req.body.image) updateData.image = req.body.image;
 
         const product = await Product.findByIdAndUpdate(
