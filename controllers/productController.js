@@ -27,6 +27,7 @@ exports.getProducts = async (req, res) => {
             amount: product.amount,
             image: product.image,
             visible: product.visible,
+            location: product.location,
             createdAt: product.createdAt
         }));
         res.status(200).json({ success: true, data: transformedProducts });
@@ -49,6 +50,7 @@ exports.getProductById = async (req, res) => {
             amount: product.amount,
             image: product.image,
             visible: product.visible,
+            location: product.location,
             createdAt: product.createdAt
         };
         res.status(200).json({ success: true, data: transformedProduct });
@@ -60,12 +62,12 @@ exports.getProductById = async (req, res) => {
 // Crear un nuevo producto (modificado)
 exports.createProduct = async (req, res) => {
     try {
-        const { name, price, amount, visible } = req.body;
+        const { name, price, amount, visible, location } = req.body;
 
         // La imagen ahora viene como URL desde el middleware handleImageUpload
         const image = req.body.image || null;
 
-        const product = await Product.create({ name, price, amount, visible, image });
+        const product = await Product.create({ name, price, amount, visible, location, image });
 
         const transformedProduct = {
             id: product._id,
@@ -74,9 +76,10 @@ exports.createProduct = async (req, res) => {
             amount: product.amount,
             image: product.image,
             visible: product.visible,
+            location: product.location,
             createdAt: product.createdAt
         };
-        await logAction('creado', product._id, name, req.user?.id || 'Admin', { name, price, amount, visible });
+        await logAction('creado', product._id, name, req.user?.id || 'Admin', { name, price, amount, visible, location });
 
         res.status(201).json({ success: true, data: transformedProduct });
     } catch (error) {
@@ -87,7 +90,7 @@ exports.createProduct = async (req, res) => {
 // Actualizar producto (modificado)
 exports.updateProduct = async (req, res) => {
     try {
-        const { name, price, amount, visible } = req.body;
+        const { name, price, amount, visible, location } = req.body;
 
         // Si hay una nueva imagen, viene en req.body.image desde el middleware
         const updateData = { name, price, amount, visible };
@@ -110,9 +113,10 @@ exports.updateProduct = async (req, res) => {
             amount: product.amount,
             image: product.image,
             visible: product.visible,
+            location: product.location,
             createdAt: product.createdAt
         };
-        await logAction('actualizado', product._id, product.name, req.user?.id || 'Admin', { name, price, amount, visible });
+        await logAction('actualizado', product._id, product.name, req.user?.id || 'Admin', { name, price, amount, visible, location });
         res.status(200).json({ success: true, data: transformedProduct });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
